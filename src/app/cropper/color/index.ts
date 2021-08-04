@@ -1,1 +1,1 @@
-export * from './public_api';
+export { Color, hexColorToInt, color } from './color';

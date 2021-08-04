@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { LyTheme2, LY_THEME, LY_THEME_NAME, StyleRenderer } from './cropper';
 import {LyImageCropperModule} from './cropper/image-cropper'
-import { MinimaLight } from './cropper/themes/minima/public_api';
+import { MinimaLight } from './cropper/themes/minima';
 
 @NgModule({
   declarations: [

@@ -1,1 +1,2 @@
-export * from './public_api';
+export * from './image-cropper';
+export * from './image-cropper.module';

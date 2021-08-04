@@ -33,4 +33,8 @@ export class AppComponent {
   onError(e: ImgCropperErrorEvent) {
     console.warn(`'${e.name}' is not a valid image`, e);
   }
+
+  cropImage(){
+    this.cropper.crop();
+  }
 }

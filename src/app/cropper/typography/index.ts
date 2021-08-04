@@ -1,1 +1,2 @@
-export * from './public_api';
+export * from './typography.module';
+export * from './typography.directive';
