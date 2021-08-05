@@ -1,41 +1,73 @@
 //image cropper
-.LyImageCropper-root-a{
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+
+.LyImageCropper-imgContainer-b{
+    cursor: move;
+    position: absolute;
+    top: 0;
+    left: 0;
     display: flex;
-    overflow: hidden;
-    position: relative;
-    justify-content: center;
-    align-items: center;
+    touch-action: none;
 
-    & .LyImageCropper-imgContainer-b{
-        cursor: move;
-        position: absolute;
-        top: 0;
-        left: 0;
-        display: flex;
-        touch-action: none;
-
-        // transform image drag
-        // transform: translate3d(-2996.1px, -1647.5px, 0px) scale(0.106752);
-        // transform-origin: 3747.5px 1873.5px 0px;
+    & > canvas {
+        display: block
     }
 
-    .LyImageCropper-defaultContent-f{
+    // transform image drag
+    // transform: translate3d(-2996.1px, -1647.5px, 0px) scale(0.106752);
+    // transform-origin: 3747.5px 1873.5px 0px;
+}
+
+.LyImageCropper-defaultContent-f{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    & > input{
+        background: transparent;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+//cropper area
+.LyImageCropper-area-c{
+    border: solid 2px rgb(255, 255, 255);
+    z-index: 1001;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    box-shadow: 0 0 0 20000px rgba(0, 0, 0, 0.4);
+    margin: auto;
+
+    //config width
+    width: 400px;
+    height: 400px;
+
+    &::after{
+        border: solid 2px rgb(255, 255, 255);
+        border-radius: inherit;
+    }
+
+    &::before{
+        width: 0;
+        height: 0;
+        margin: auto;
+        border-radius: 50%;
+        background: #fff;
+        border: solid 2px rgb(255, 255, 255);
+    }
+
+    &::before, &::after{
         position: absolute;
         top: 0;
         bottom: 0;
         left: 0;
         right: 0;
-
-        & > input{
-            background: transparent;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-        }
     }
-    
 }

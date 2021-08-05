@@ -13,7 +13,7 @@ import {
   Inject,
   OnInit
 } from '@angular/core';
-import { mergeDeep, LY_COMMON_STYLES, ThemeVariables, lyl, ThemeRef, StyleCollection, LyClasses, StyleTemplate, StyleRenderer } from '../';
+import { mergeDeep, LY_COMMON_STYLES, ThemeVariables, lyl, ThemeRef, StyleCollection, LyClasses, StyleTemplate } from '../';
 import { Subject, Observable } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { normalizePassiveListenerOptions } from '@angular/cdk/platform';
@@ -41,15 +41,6 @@ export const STYLES = (theme: ThemeVariables & LyImageCropperVariables, ref: The
     $name: LyImageCropper.и,
     $priority: STYLE_PRIORITY,
     root: ( ) => lyl `{
-      -webkit-user-select: none
-      -moz-user-select: none
-      -ms-user-select: none
-      user-select: none
-      display: flex
-      overflow: hidden
-      position: relative
-      justify-content: center
-      align-items: center
       {
         ...${
           (theme.cropper
@@ -59,17 +50,6 @@ export const STYLES = (theme: ThemeVariables & LyImageCropperVariables, ref: The
               : theme.cropper.root(cropper))
           )
         }
-      }
-    }`,
-    imgContainer: lyl `{
-      cursor: move
-      position: absolute
-      top: 0
-      left: 0
-      display: flex
-      touch-action: none
-      & > canvas {
-        display: block
       }
     }`,
     overlay: lyl `{
@@ -83,18 +63,6 @@ export const STYLES = (theme: ThemeVariables & LyImageCropperVariables, ref: The
       &:before, &:after {
         ...${LY_COMMON_STYLES.fill}
         content: ''
-      }
-      &:before {
-        width: 0
-        height: 0
-        margin: auto
-        border-radius: 50%
-        background: #fff
-        border: solid 2px rgb(255, 255, 255)
-      }
-      &:after {
-        border: solid 2px rgb(255, 255, 255)
-        border-radius: inherit
       }
     }`,
     resizer: lyl `{
@@ -120,23 +88,6 @@ export const STYLES = (theme: ThemeVariables & LyImageCropperVariables, ref: The
         transform: translate(-25%, -25%)
       }
     }`,
-    defaultContent: lyl `{
-      display: flex
-      align-items: center
-      justify-content: center
-      &, & > input {
-        ...${LY_COMMON_STYLES.fill}
-      }
-      & *:not(input) {
-        pointer-events: none
-      }
-      & > input {
-        background: transparent
-        opacity: 0
-        width: 100%
-        height: 100%
-      }
-    }`
   };
 };
 /** Image Cropper Config */
@@ -325,9 +276,7 @@ export interface ImgCropperLoaderConfig {
   preserveWhitespaces: false,
   selector: 'ly-img-cropper, ly-image-cropper',
   templateUrl: 'image-cropper.html',
-  providers: [
-    StyleRenderer
-  ]
+  styleUrls: ['./image-cropper.scss'],
 })
 export class LyImageCropper implements OnInit, OnDestroy {
   static readonly и = 'LyImageCropper';
@@ -335,7 +284,7 @@ export class LyImageCropper implements OnInit, OnDestroy {
    * styles
    * @docs-private
    */
-  readonly classes = this.sRenderer.renderSheet(STYLES, true);
+  // readonly classes = this.sRenderer.renderSheet(STYLES, true);
   private _currentLoadConfig?: ImgCropperLoaderConfig;
   // _originalImgBase64?: string;
   // private _fileName: string | null;
@@ -463,7 +412,6 @@ export class LyImageCropper implements OnInit, OnDestroy {
   protected _document: Document;
 
   constructor(
-    readonly sRenderer: StyleRenderer,
     private _renderer: Renderer2,
     readonly _elementRef: ElementRef<HTMLElement>,
     private cd: ChangeDetectorRef,
@@ -787,15 +735,6 @@ export class LyImageCropper implements OnInit, OnDestroy {
       if ((limitBottom && !isMinScaleY) || (!limitBottom && isMinScaleY)) {
         y = startP.y + (startP.top) + (config.height / 2 / scaleFix) - canvas.height;
       }
-
-      // When press shiftKey, deprecated
-      // if (event.srcEvent && event.srcEvent.shiftKey) {
-      //   if (Math.abs(event.deltaX) === Math.max(Math.abs(event.deltaX), Math.abs(event.deltaY))) {
-      //     y = this.offset.top;
-      //   } else {
-      //     x = this.offset.left;
-      //   }
-      // }
 
       if (x === void 0) { x = (deltaX / scaleFix) + (startP.x); }
       if (y === void 0) { y = (deltaY / scaleFix) + (startP.y); }
