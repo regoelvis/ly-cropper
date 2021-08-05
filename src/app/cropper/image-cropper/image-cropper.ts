@@ -21,75 +21,8 @@ import { DOCUMENT } from '@angular/common';
 import { resizeCanvas } from './resize-canvas';
 import { ViewportRuler } from '@angular/cdk/scrolling';
 
-export interface LyImageCropperTheme {
-  /** Styles for Image Cropper Component */
-  root?: StyleCollection<((classes: LyClasses<typeof STYLES>) => StyleTemplate)>
-    | ((classes: LyClasses<typeof STYLES>) => StyleTemplate);
-}
-
-export interface LyImageCropperVariables {
-  cropper?: LyImageCropperTheme;
-}
-
 const activeEventOptions = normalizePassiveListenerOptions({passive: false});
-const STYLE_PRIORITY = -2;
 
-export const STYLES = (theme: ThemeVariables & LyImageCropperVariables, ref: ThemeRef) => {
-  const cropper = ref.selectorsOf(STYLES);
-  const { after } = theme;
-  return {
-    $name: LyImageCropper.и,
-    $priority: STYLE_PRIORITY,
-    root: ( ) => lyl `{
-      {
-        ...${
-          (theme.cropper
-            && theme.cropper.root
-            && (theme.cropper.root instanceof StyleCollection
-              ? theme.cropper.root.setTransformer(fn => fn(cropper))
-              : theme.cropper.root(cropper))
-          )
-        }
-      }
-    }`,
-    overlay: lyl `{
-      ...${LY_COMMON_STYLES.fill}
-    }`,
-    area: lyl `{
-      pointer-events: none
-      box-shadow: 0 0 0 20000px rgba(0, 0, 0, 0.4)
-      ...${LY_COMMON_STYLES.fill}
-      margin: auto
-      &:before, &:after {
-        ...${LY_COMMON_STYLES.fill}
-        content: ''
-      }
-    }`,
-    resizer: lyl `{
-      width: 10px
-      height: 10px
-      background: #fff
-      border-radius: 3px
-      position: absolute
-      touch-action: none
-      bottom: 0
-      ${after}: 0
-      pointer-events: all
-      cursor: ${
-        after === 'right'
-          ? 'nwse-resize'
-          : 'nesw-resize'
-      }
-      &:before {
-        ...${LY_COMMON_STYLES.fill}
-        content: ''
-        width: 20px
-        height: 20px
-        transform: translate(-25%, -25%)
-      }
-    }`,
-  };
-};
 /** Image Cropper Config */
 export class ImgCropperConfig {
   /** Cropper area width */

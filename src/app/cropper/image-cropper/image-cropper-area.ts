@@ -1,12 +1,9 @@
 import { Component, ElementRef, NgZone, Input, OnDestroy, ChangeDetectionStrategy, Inject, ViewChild } from '@angular/core';
 import { normalizePassiveListenerOptions } from '@angular/cdk/platform';
-import { Style, WithStyles, lyl } from '../';
-import { STYLES, LyImageCropper } from './image-cropper';
+import { LyImageCropper } from './image-cropper';
 import { DOCUMENT } from '@angular/common';
 
 const activeEventOptions = normalizePassiveListenerOptions({passive: false});
-
-const pos = (100 * Math.sqrt(2) - 100) / 2 / Math.sqrt(2);
 
 /**
  * @dynamic
@@ -18,7 +15,6 @@ const pos = (100 * Math.sqrt(2) - 100) / 2 / Math.sqrt(2);
   exportAs: 'lyCropperArea'
 })
 export class LyCropperArea implements  OnDestroy {
-  // readonly classes = this.sRenderer.renderSheet(STYLES, 'area');
 
   private _isSliding: boolean;
   /** Keeps track of the last pointer event that was captured by the crop area. */
@@ -56,17 +52,6 @@ export class LyCropperArea implements  OnDestroy {
   }
   private _resizableArea: boolean;
   @Input() keepAspectRatio: boolean;
-  // @Input()
-  // @Style<boolean, LyCropperArea>(
-  //   (_value, _, { classes: __ }) => ({ after }) => lyl `{
-  //     border-radius: 50%
-  //     .${__.resizer} {
-  //       ${after}: ${pos}%
-  //       bottom: ${pos}%
-  //       transform: translate(4px, 4px)
-  //     }
-  //   }`
-  // ) round: boolean;
 
   constructor(
     readonly _elementRef: ElementRef,
@@ -131,22 +116,12 @@ export class LyCropperArea implements  OnDestroy {
       const deltaY = point.y - this._startPointerEvent!.y;
       const startAreaRect = this._startAreaRect;
       const startImgRect = this._startImgRect;
-      // const round = this.round;
       const keepAspectRatio = this._cropper.config.keepAspectRatio || event.shiftKey;
       let newWidth = 0;
       let newHeight = 0;
       const rootRect = this._cropper._rootRect();
 
-      /*if (round) {
-        // The distance from the center of the cropper area to the pointer
-        const originX = ((width / 2 / Math.sqrt(2)) + deltaX);
-        const originY = ((height / 2 / Math.sqrt(2)) + deltaY);
-
-        // Leg
-        const side = Math.sqrt(originX ** 2 + originY ** 2);
-        newWidth = newHeight = side * 2;
-
-      } else */if (keepAspectRatio) {
+     if (keepAspectRatio) {
         newWidth = width + deltaX * 2;
         newHeight = height + deltaY * 2;
         if (width !== height) {
@@ -181,12 +156,8 @@ export class LyCropperArea implements  OnDestroy {
       const leftOverflow = startImgRect.x > centerX - (newWidth / 2);
       const rightOverflow = centerX + (newWidth / 2) > startImgRect.right;
       const minWidthOnOverflow = Math.min((centerX - startImgRect.x) * 2, (startImgRect.right - centerX) * 2);
-      const minOnOverflow = Math.min(minWidthOnOverflow, minHeightOnOverflow);
-      /*if (round) {
-        if (topOverflow || bottomOverflow || leftOverflow || rightOverflow) {
-          newHeight = newWidth = minOnOverflow;
-        }
-      } else */if (keepAspectRatio) {
+      
+      if (keepAspectRatio) {
         const newNewWidth: number[] = [];
         const newNewHeight: number[] = [];
         if ((topOverflow || bottomOverflow) && Math.min()) {
@@ -217,14 +188,7 @@ export class LyCropperArea implements  OnDestroy {
       }
 
       // Do not overflow the container
-      /*if (round) {
-        const min = Math.min(rootRect.width, rootRect.height);
-        if (newWidth > min) {
-          newWidth = newHeight = min;
-        } else if (newHeight > min) {
-          newWidth = newHeight = min;
-        }
-      } else*/ if (keepAspectRatio) {
+      if (keepAspectRatio) {
         if (newWidth > rootRect.width) {
           newWidth = rootRect.width;
           newHeight = height / (width / rootRect.width);
@@ -239,7 +203,6 @@ export class LyCropperArea implements  OnDestroy {
           newHeight = rootRect.height;
         }
       }
-
 
       // round values
       newWidth = Math.round(newWidth);
@@ -259,7 +222,6 @@ export class LyCropperArea implements  OnDestroy {
       this._removeGlobalEvents();
       this._cropper._primaryAreaWidth = this._cropper.config.width = this._currentWidth;
       this._cropper._primaryAreaHeight = this._cropper.config.height = this._currentHeight;
-      this._cropper.config = this._cropper.config;
       this._cropper._updateMinScale();
       this._isSliding = false;
       this._startPointerEvent = null;
