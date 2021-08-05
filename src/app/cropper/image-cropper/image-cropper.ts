@@ -13,7 +13,7 @@ import {
   Inject,
   OnInit
 } from '@angular/core';
-import { mergeDeep, LY_COMMON_STYLES, ThemeVariables, lyl, ThemeRef, StyleCollection, LyClasses, StyleTemplate } from '../';
+import { mergeDeep, ThemeVariables, lyl, ThemeRef, StyleCollection, LyClasses, StyleTemplate } from '../';
 import { Subject, Observable } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { normalizePassiveListenerOptions } from '@angular/cdk/platform';

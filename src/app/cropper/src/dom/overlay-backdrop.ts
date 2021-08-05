@@ -1,13 +1,11 @@
 import { Component, HostListener, ElementRef } from '@angular/core';
 import { LyTheme2 } from '../theme/theme2.service';
 import { LyOverlayConfig } from './overlay-config';
-import { LY_COMMON_STYLES } from '../styles/core-styles';
 import { StyleRenderer } from '../minimal/renderer-style';
 import { lyl } from '../parse';
 
 const STYLE_PRIORITY = -2;
 export const STYLES_BACKDROP_ROOT = () => lyl `{
-  ...${LY_COMMON_STYLES.fill}
   width: 100vw
   height: 100vh
   pointer-events: all
